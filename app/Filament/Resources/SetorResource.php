@@ -21,7 +21,7 @@ class SetorResource extends Resource
     protected static ?string $model = Setor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Sistema de Demandas';
+    protected static ?string $navigationGroup = 'Sistema de Senhas';
 
     public static function form(Form $form): Form
     {

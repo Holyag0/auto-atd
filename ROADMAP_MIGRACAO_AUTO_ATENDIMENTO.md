@@ -16,10 +16,18 @@ O sistema de senhas atual está integrado ao projeto `faq-cabemce` e gerencia fi
 ```
 Associado → QR Code → Formulário → Código Acesso → Senha Gerada
                                                    ↓
-Operador → Painel → Chamar Próxima → Senha Chamando → Atender → Senha Atendida
+Operador (logado) → Painel → Chamar Próxima → Senha Chamando → Atender → Senha Atendida
                                          ↓
 Painel Público → Server-Sent Events → Exibe Senha Atual em Tempo Real
 ```
+
+### Requisitos de Acesso
+
+| Componente | Rota | Acesso |
+|-----------|------|--------|
+| Painel do Operador | `/operador` | Apenas usuários autenticados (Filament) |
+| Painel Público | `/painel` | Público (sem login) |
+| Autoatendimento | `/senha` | Público (sem login) |
 
 ---
 
@@ -162,7 +170,49 @@ auto-atd/
 
 ---
 
-## 4. Roadmap de Migração
+## 4. Requisitos de Acesso e Autenticação
+
+### 4.1 Política de Acesso
+
+| Rota | Acesso | Middleware |
+|------|--------|------------|
+| `/painel/*` | Público | `web` (sem auth) |
+| `/senha/*` | Público | `web` (sem auth) - autoatendimento |
+| `/operador/*` | Restrito | `auth` - apenas usuários logados no Filament |
+
+### 4.2 Middleware
+
+**Painel do Operador (Restrito):**
+```php
+Route::prefix('operador')
+    ->name('operador.')
+    ->middleware(['auth'])
+    ->group(function () {
+        // rotas do operador
+    });
+```
+
+**Painel Público e Senha (Público):**
+```php
+// Sem middleware de autenticação
+Route::prefix('painel')->name('painel.')->group(function () {
+    // rotas do painel público
+});
+
+Route::prefix('senha')->name('senha.')->group(function () {
+    // rotas de autoatendimento
+});
+```
+
+### 4.3 Links do Filament
+
+O `SetorResource` deve incluir ações que direcionam para:
+- Painel Público: Link aberto em nova aba (público)
+- Controle do Operador: Link aberto em nova aba (requer auth)
+
+---
+
+## 5. Roadmap de Migração
 
 ### Fase 1: Preparação do Ambiente (Dia 1)
 
@@ -276,16 +326,18 @@ Migrar `SenhaService.php` com métodos:
 
 #### 4.1 Controllers a migrar
 
-| Controller | Prefixo de Rota |
-|------------|-----------------|
-| `PainelSenhaController` | `/painel` |
-| `AssociadoSenhaController` | `/senha` |
-| `OperadorSenhaController` | `/operador` |
+| Controller | Prefixo de Rota | Middleware | Acesso |
+|------------|-----------------|------------|--------|
+| `PainelSenhaController` | `/painel` | `web` | Público |
+| `AssociadoSenhaController` | `/senha` | `web` | Público |
+| `OperadorSenhaController` | `/operador` | `auth` | Restrito (usuários logados) |
 
 #### 4.2 Rotas
 
 ```php
 // web.php
+
+// Painel Público - ACESSO PÚBLICO (sem autenticação)
 Route::prefix('painel')->name('painel.')->group(function () {
     Route::get('/', [PainelSenhaController::class, 'index'])->name('index');
     Route::get('/{setor}', [PainelSenhaController::class, 'setor'])->name('setor');
@@ -293,6 +345,7 @@ Route::prefix('painel')->name('painel.')->group(function () {
     Route::get('/{setor}/dados', [PainelSenhaController::class, 'dados'])->name('dados');
 });
 
+// Autoatendimento - ACESSO PÚBLICO (sem autenticação)
 Route::prefix('senha')->name('senha.')->group(function () {
     Route::get('/{setor}/qrcode', [AssociadoSenhaController::class, 'qrcode'])->name('qrcode');
     Route::get('/{setor}/criar', [AssociadoSenhaController::class, 'formulario'])->name('formulario');
@@ -301,14 +354,17 @@ Route::prefix('senha')->name('senha.')->group(function () {
     Route::get('/comprovante/{senha}', [AssociadoSenhaController::class, 'comprovante'])->name('comprovante');
 });
 
-Route::prefix('operador')->name('operador.')->group(function () {
-    Route::get('/', [OperadorSenhaController::class, 'index'])->name('index');
-    Route::get('/{setor}', [OperadorSenhaController::class, 'painel'])->name('painel');
-    Route::get('/{setor}/dados', [OperadorSenhaController::class, 'dados'])->name('dados');
-    Route::post('/{setor}/chamar-proxima', [OperadorSenhaController::class, 'chamarProxima'])->name('chamar-proxima');
-    Route::post('/{setor}/atender-atual', [OperadorSenhaController::class, 'atenderAtual'])->name('atender-atual');
-    Route::post('/senha/{senha}/cancelar', [OperadorSenhaController::class, 'cancelar'])->name('cancelar');
-});
+Route::prefix('operador')
+    ->name('operador.')
+    ->middleware(['auth']) // Apenas usuários autenticados
+    ->group(function () {
+        Route::get('/', [OperadorSenhaController::class, 'index'])->name('index');
+        Route::get('/{setor}', [OperadorSenhaController::class, 'painel'])->name('painel');
+        Route::get('/{setor}/dados', [OperadorSenhaController::class, 'dados'])->name('dados');
+        Route::post('/{setor}/chamar-proxima', [OperadorSenhaController::class, 'chamarProxima'])->name('chamar-proxima');
+        Route::post('/{setor}/atender-atual', [OperadorSenhaController::class, 'atenderAtual'])->name('atender-atual');
+        Route::post('/senha/{senha}/cancelar', [OperadorSenhaController::class, 'cancelar'])->name('cancelar');
+    });
 ```
 
 ---
@@ -439,7 +495,11 @@ Route::prefix('operador')->name('operador.')->group(function () {
      - Mensagem do Painel (textarea)
      - Seção Código de Acesso (disabled input + contador info)
    - Actions: Gerar Novo Código, Reiniciar Contador, QR Code, Painel Público, Controle do Operador
-   - ActionGroup "Acessos Rápidos" com 4 ações
+   - ActionGroup "Acessos Rápidos" com 4 ações:
+     - **Painel Público**: Abre em nova aba (público, sem auth)
+     - **Controle do Operador**: Abre em nova aba (requer login do usuário)
+     - **QR Code**: Exibe QR code do setor
+     - **Gerar Novo Código**: Reinicia código de acesso
 
 3. **UserResource.php** (Se aplicável ao novo sistema):
    - Relacionamento com setor
@@ -687,6 +747,7 @@ DB_PASSWORD=secret
 - [ ] Migrar SenhaService
 - [ ] Migrar controllers
 - [ ] Configurar rotas
+- [ ] **Verificar middleware**: `/painel` e `/senha` públicos; `/operador` com `auth`
 
 ### Frontend
 - [ ] Migrar views senha/
@@ -712,9 +773,11 @@ DB_PASSWORD=secret
 
 ### Testes
 - [ ] Testar fluxo completo
-- [ ] Testar autoatendimento
-- [ ] Testar painel SSE
+- [ ] Testar autoatendimento (público)
+- [ ] Testar painel SSE (público)
 - [ ] Testar Filament
+- [ ] **Verificar**: `/operador` bloqueia acesso não autenticado
+- [ ] **Verificar**: `/painel` e `/senha` funcionam sem login
 
 ### Documentação
 - [ ] README.md

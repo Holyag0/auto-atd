@@ -30,14 +30,6 @@ class Setor extends Model
     }
 
     /**
-     * Relacionamento com demandas
-     */
-    public function demandas(): HasMany
-    {
-        return $this->hasMany(Demanda::class, 'setor_id');
-    }
-
-    /**
      * Relacionamento com senhas
      */
     public function senhas(): HasMany

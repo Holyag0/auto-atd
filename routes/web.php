@@ -22,15 +22,18 @@ Route::prefix('senha')->name('senha.')->group(function () {
     Route::get('/comprovante/{senha}', [AssociadoSenhaController::class, 'comprovante'])->name('comprovante');
 });
 
-// Rotas do Operador
-Route::prefix('operador')->name('operador.')->group(function () {
-    Route::get('/', [OperadorSenhaController::class, 'index'])->name('index');
-    Route::get('/{setor}', [OperadorSenhaController::class, 'painel'])->name('painel');
-    Route::get('/{setor}/dados', [OperadorSenhaController::class, 'dados'])->name('dados');
-    Route::post('/{setor}/chamar-proxima', [OperadorSenhaController::class, 'chamarProxima'])->name('chamar-proxima');
-    Route::post('/{setor}/atender-atual', [OperadorSenhaController::class, 'atenderAtual'])->name('atender-atual');
-    Route::post('/senha/{senha}/cancelar', [OperadorSenhaController::class, 'cancelar'])->name('cancelar');
-});
+// Rotas do Operador - Requer autenticação
+Route::prefix('operador')
+    ->name('operador.')
+    ->middleware(['auth'])
+    ->group(function () {
+        Route::get('/', [OperadorSenhaController::class, 'index'])->name('index');
+        Route::get('/{setor}', [OperadorSenhaController::class, 'painel'])->name('painel');
+        Route::get('/{setor}/dados', [OperadorSenhaController::class, 'dados'])->name('dados');
+        Route::post('/{setor}/chamar-proxima', [OperadorSenhaController::class, 'chamarProxima'])->name('chamar-proxima');
+        Route::post('/{setor}/atender-atual', [OperadorSenhaController::class, 'atenderAtual'])->name('atender-atual');
+        Route::post('/senha/{senha}/cancelar', [OperadorSenhaController::class, 'cancelar'])->name('cancelar');
+    });
 
 // Rota padrão - redireciona para o painel
 Route::get('/', function () {

@@ -128,7 +128,7 @@
 
         <!-- Logo -->
         <div class="text-center mt-6">
-            <p class="text-gray-600 font-semibold">CABEMCE</p>
+            <p class="text-gray-600 font-semibold">Auto-ATD</p>
         </div>
     </div>
 </body>

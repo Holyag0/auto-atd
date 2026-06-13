@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Controle de Atendimento - CABEMCE</title>
+    <title>Controle de Atendimento - Auto-ATD</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -149,7 +149,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                     <div>
-                        <p class="font-semibold text-gray-800">CABEMCE</p>
+                        <p class="font-semibold text-gray-800">Auto-ATD</p>
                         <p class="text-sm text-gray-600">Sistema de Senhas v1.0</p>
                     </div>
                 </div>

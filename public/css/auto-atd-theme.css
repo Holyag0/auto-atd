@@ -4,118 +4,121 @@
     --cabemce-blue: #1e40af;
     --cabemce-red: #dc2626;
     --cabemce-gold: #d4af37;
+    
+    /* Light mode variables */
+    --sidebar-active-bg: rgba(30, 64, 175, 0.08);
+    --sidebar-hover-bg: rgba(30, 64, 175, 0.05);
+    --topbar-bg: linear-gradient(135deg, var(--cabemce-blue) 0%, #1e3a8a 100%);
+    --btn-primary-bg: linear-gradient(135deg, var(--cabemce-blue) 0%, #1e3a8a 100%);
+    --btn-primary-hover: linear-gradient(135deg, #1e3a8a 0%, #172554 100%);
+    --border-subtle: rgba(156, 163, 175, 0.2);
 }
 
-/* Logo na página de login */
-.fi-simple-layout .fi-logo {
-    height: 4rem !important;
+.dark {
+    /* Dark mode variables - smooth and modern */
+    --cabemce-blue: #60a5fa; /* Lighter blue for dark mode readability */
+    --cabemce-red: #ef4444;  /* Lighter red */
+    --sidebar-active-bg: rgba(96, 165, 250, 0.15);
+    --sidebar-hover-bg: rgba(96, 165, 250, 0.08);
+    --topbar-bg: #0f172a; /* Smooth dark background for topbar */
+    --btn-primary-bg: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    --btn-primary-hover: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+    --border-subtle: rgba(255, 255, 255, 0.1);
+}
+
+/* Logo size */
+.fi-simple-layout .fi-logo,
+.fi-logo {
+    height: 3rem !important;
     width: auto !important;
 }
 
-/* Header do painel com cores CABEMCE */
+/* Header do painel */
 .fi-topbar {
-    background: linear-gradient(135deg, var(--cabemce-blue) 0%, #1e3a8a 100%) !important;
-    border-bottom: 3px solid var(--cabemce-red) !important;
+    background: var(--topbar-bg) !important;
+    border-bottom: 2px solid var(--cabemce-red) !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-/* Sidebar com cores suaves */
-.fi-sidebar {
-    background: #ffffff !important;
-    border-right: 1px solid #e5e7eb !important;
+.dark .fi-topbar {
+    border-bottom: 1px solid rgba(239, 68, 68, 0.5) !important; /* Softer red border in dark mode */
 }
 
-.fi-sidebar-nav {
-    background: #ffffff !important;
-}
-
-/* Item de navegação ativo */
+/* Sidebar navigation */
 .fi-sidebar-item-button[aria-current="page"],
 .fi-sidebar-item-button.fi-active {
-    background-color: rgba(30, 64, 175, 0.1) !important;
+    background-color: var(--sidebar-active-bg) !important;
     color: var(--cabemce-blue) !important;
     font-weight: 600 !important;
     border-left: 3px solid var(--cabemce-blue) !important;
+    border-radius: 0 0.5rem 0.5rem 0;
 }
 
-/* Item de navegação hover */
 .fi-sidebar-item-button:hover {
-    background-color: rgba(30, 64, 175, 0.05) !important;
+    background-color: var(--sidebar-hover-bg) !important;
     color: var(--cabemce-blue) !important;
 }
 
-/* Grupos de navegação */
 .fi-sidebar-group-label {
     color: var(--cabemce-blue) !important;
     font-weight: 700 !important;
     text-transform: uppercase !important;
-    font-size: 0.75rem !important;
     letter-spacing: 0.05em !important;
+}
+
+/* Detalhes dourados */
+.fi-sidebar-group {
+    border-top: 1px solid rgba(212, 175, 55, 0.3) !important;
 }
 
 /* Botões primários */
 .fi-btn-primary {
-    background: linear-gradient(135deg, var(--cabemce-blue) 0%, #1e3a8a 100%) !important;
-    border-color: var(--cabemce-blue) !important;
+    background: var(--btn-primary-bg) !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease-in-out;
 }
 
 .fi-btn-primary:hover {
-    background: linear-gradient(135deg, #1e3a8a 0%, #172554 100%) !important;
+    background: var(--btn-primary-hover) !important;
+    transform: translateY(-1px);
 }
 
-/* Botões de perigo/deletar */
+/* Botões de perigo */
 .fi-btn-danger {
     background: linear-gradient(135deg, var(--cabemce-red) 0%, #b91c1c 100%) !important;
-    border-color: var(--cabemce-red) !important;
+    border-color: transparent !important;
 }
 
-.fi-btn-danger:hover {
-    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%) !important;
+.dark .fi-btn-danger {
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%) !important;
 }
 
 /* Badges */
 .fi-badge-primary {
-    background-color: rgba(30, 64, 175, 0.1) !important;
+    background-color: var(--sidebar-active-bg) !important;
     color: var(--cabemce-blue) !important;
 }
 
 .fi-badge-danger {
-    background-color: rgba(220, 38, 38, 0.1) !important;
+    background-color: rgba(220, 38, 38, 0.15) !important;
     color: var(--cabemce-red) !important;
 }
 
-/* Links */
-a {
-    color: var(--cabemce-blue) !important;
+/* Stats widgets */
+.fi-stats-card {
+    border-left: 4px solid var(--cabemce-blue) !important;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
 }
 
-a:hover {
-    color: #1e3a8a !important;
+/* Section styling */
+.fi-section {
+    border-radius: 0.75rem !important;
 }
 
-/* Inputs em foco */
-.fi-input:focus,
-.fi-select:focus,
-.fi-textarea:focus {
-    border-color: var(--cabemce-blue) !important;
-    ring-color: rgba(30, 64, 175, 0.2) !important;
-}
-
-/* Checkboxes e radios */
-.fi-checkbox:checked,
-.fi-radio:checked {
-    background-color: var(--cabemce-blue) !important;
-    border-color: var(--cabemce-blue) !important;
-}
-
-/* Tabs */
-.fi-tabs-tab[aria-selected="true"] {
-    color: var(--cabemce-blue) !important;
-    border-bottom-color: var(--cabemce-blue) !important;
-}
-
-/* Cards e sections */
 .fi-section-header {
-    border-bottom: 2px solid #e5e7eb !important;
+    border-bottom: 1px solid var(--border-subtle) !important;
 }
 
 .fi-section-header-heading {
@@ -123,99 +126,4 @@ a:hover {
     font-weight: 700 !important;
 }
 
-/* Stats widgets */
-.fi-stats-card {
-    border-left: 4px solid var(--cabemce-blue) !important;
-}
-
-/* Página de login */
-.fi-simple-page {
-    background: linear-gradient(135deg, #f8fafc 0%, #e5e7eb 100%) !important;
-}
-
-.fi-simple-page .fi-section {
-    border: 1px solid #e5e7eb !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* Header da página */
-.fi-header {
-    border-bottom: 3px solid #e5e7eb !important;
-}
-
-.fi-header-heading {
-    color: var(--cabemce-blue) !important;
-    font-weight: 700 !important;
-}
-
-/* Breadcrumbs */
-.fi-breadcrumbs-item a {
-    color: var(--cabemce-blue) !important;
-}
-
-/* Notificações */
-.fi-notification-success {
-    border-left: 4px solid #10b981 !important;
-}
-
-.fi-notification-danger {
-    border-left: 4px solid var(--cabemce-red) !important;
-}
-
-.fi-notification-warning {
-    border-left: 4px solid #f59e0b !important;
-}
-
-.fi-notification-info {
-    border-left: 4px solid var(--cabemce-blue) !important;
-}
-
-/* Loading indicator */
-.fi-loading-indicator {
-    color: var(--cabemce-blue) !important;
-}
-
-/* Dropdown menu */
-.fi-dropdown-list {
-    border: 1px solid #e5e7eb !important;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* Footer customizado */
-.fi-footer {
-    border-top: 2px solid #e5e7eb !important;
-    background: #f8fafc !important;
-}
-
-/* Paginação */
-.fi-pagination-button[aria-current="page"] {
-    background-color: var(--cabemce-blue) !important;
-    color: white !important;
-}
-
-/* Tabelas */
-.fi-table-header-cell {
-    background-color: #f8fafc !important;
-    color: var(--cabemce-blue) !important;
-    font-weight: 600 !important;
-}
-
-.fi-table-row:hover {
-    background-color: rgba(30, 64, 175, 0.02) !important;
-}
-
-/* Modal */
-.fi-modal-window {
-    border: 1px solid #e5e7eb !important;
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15) !important;
-}
-
-/* Toggle switch */
-.fi-toggle:checked {
-    background-color: var(--cabemce-blue) !important;
-}
-
-/* Detalhes dourados (como nos ramos do logo) */
-.fi-sidebar-group {
-    border-top: 1px solid rgba(212, 175, 55, 0.2) !important;
-}
+/* Clean up unnecessary hardcoded backgrounds so Filament handles Dark/Light mode natively */

@@ -48,6 +48,17 @@ services:
                 - '${DB_USERNAME}'
             retries: 3
             timeout: 5s
+    ngrok:
+        image: 'ngrok/ngrok:latest'
+        ports:
+            - '4040:4040'
+        environment:
+            NGROK_AUTHTOKEN: '${NGROK_AUTHTOKEN}'
+        command: "http laravel.test:80"
+        networks:
+            - sail
+        depends_on:
+            - laravel.test
 networks:
     sail:
         driver: bridge

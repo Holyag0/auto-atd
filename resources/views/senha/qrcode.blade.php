@@ -79,10 +79,10 @@
             </div>
         </div>
 
-        <!-- Logo CABEMCE -->
+        <!-- Logo Auto-ATD -->
         <div class="text-center mt-8">
-            <p class="text-gray-600 font-semibold">CABEMCE</p>
-            <p class="text-sm text-gray-500">Caixa de Assistência dos Empregados da MCE</p>
+            <p class="text-gray-600 font-semibold">Auto-ATD</p>
+            <p class="text-sm text-gray-500">Sistema de Autoatendimento</p>
         </div>
     </div>
 </body>
